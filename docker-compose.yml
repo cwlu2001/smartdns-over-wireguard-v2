@@ -1,0 +1,16 @@
+version: '3.5'
+services:
+    sdnsow:
+        container_name: sdnsow
+        environment:
+            - VPN_SERVER_IP=10.10.0.254
+        ports:
+            - 51820:51820/udp
+        volumes:
+            - ./configs/wireguard/wg0.conf:/etc/wireguard/wg0.conf:ro
+            - ./configs/dnsmasq/:/tmp/dnsmasq/:ro
+        cap_add:
+            - NET_ADMIN
+        network_mode: 'bridge'
+        restart: unless-stopped
+        image: 'cwlu2001/smartdns-over-wireguard:latest'
