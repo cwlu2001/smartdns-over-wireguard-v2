@@ -28,33 +28,19 @@ FROM alpine:3.18
 COPY --from=builder /dnsmasq/src/dnsmasq /usr/local/bin/dnsmasq
 RUN chmod 755 /usr/local/bin/dnsmasq
 
-# Using custom upstream dns server
-RUN touch /etc/resolv.dnsmasq.conf &&\
-    echo "nameserver 1.1.1.1" >> /etc/resolv.dnsmasq.conf &&\
-    echo "nameserver 8.8.8.8" >> /etc/resolv.dnsmasq.conf
+# Copy custom resolv file
+COPY src/resolv.dnsmasq.conf /etc/resolv.dnsmasq.conf
 
-# Generate dnsmasq config file
-RUN touch /etc/dnsmasq.conf &&\
-    echo "port=53"                                    >> /etc/dnsmasq.conf &&\
-    echo "resolv-file=/etc/resolv.dnsmasq.conf"       >> /etc/dnsmasq.conf &&\
-    echo "no-hosts"                                   >> /etc/dnsmasq.conf &&\
-    echo "conf-file=/etc/dnsmasq.d/spoofed.list.conf" >> /etc/dnsmasq.conf
+# Copy dnsmasq config file
+COPY src/dnsmasq.conf /etc/dnsmasq.conf
 RUN mkdir -p /etc/dnsmasq.d/
 
 # Copy sniproxy from builder
 COPY --from=builder /sniproxy/src/sniproxy /usr/local/bin/sniproxy
 RUN chmod 755 /usr/local/bin/dnsmasq
 
-# Generate sniproxy config file
-RUN touch /etc/sniproxy.conf &&\
-    echo "listen 0.0.0.0:443 {"     >> /etc/sniproxy.conf && \
-    echo "    proto tls"            >> /etc/sniproxy.conf && \
-    echo "    table default"        >> /etc/sniproxy.conf && \
-    echo "    fallback 0.0.0.0:443" >> /etc/sniproxy.conf && \
-    echo "}"                        >> /etc/sniproxy.conf && \
-    echo "table default {"          >> /etc/sniproxy.conf && \
-    echo "    .* *:443"             >> /etc/sniproxy.conf && \
-    echo "}"                        >> /etc/sniproxy.conf
+# Copy sniproxy config file
+COPY src/sniproxy.conf /etc/sniproxy.conf
 
 # Update & install wireguard
 RUN apk update &&\

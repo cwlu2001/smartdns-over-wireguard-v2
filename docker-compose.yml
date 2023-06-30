@@ -1,7 +1,7 @@
 version: '3.5'
 services:
-    sdnsow:
-        container_name: sdnsow
+    smartdns-over-wireguard:
+        container_name: smartdns-over-wireguard
         environment:
             - VPN_SERVER_IP=10.10.0.254
         ports:
