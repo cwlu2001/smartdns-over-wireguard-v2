@@ -14,6 +14,8 @@ WORKDIR /dnsmasq
 RUN sed -i "0a\#define NO_TFTP"  src/config.h &&\
     sed -i "0a\#define NO_DHCP"  src/config.h &&\
     sed -i "0a\#define NO_DHCP6" src/config.h &&\
+    sed -i "0a\#define NO_IPSET" src/config.h &&\
+    sed -i "0a\#define NO_AUTH" src/config.h &&\
     make all
 
 # Building sniproxy

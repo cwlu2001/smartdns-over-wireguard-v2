@@ -11,6 +11,5 @@ services:
             - ./configs/dnsmasq/:/tmp/dnsmasq/:ro
         cap_add:
             - NET_ADMIN
-        network_mode: 'bridge'
         restart: unless-stopped
         image: 'cwlu2001/smartdns-over-wireguard:latest'
