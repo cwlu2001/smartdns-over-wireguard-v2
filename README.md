@@ -3,7 +3,7 @@
 A SmartDNS proxy in VPN tunnel
 
 ## Supported Services
-- Twtich
+- Twitch
 - Netflix
 
 ## How to use?
