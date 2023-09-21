@@ -24,8 +24,8 @@ jobs:
             cwlu2001/smartdns-over-wireguard
           tags: |
             type=semver,pattern={{version}}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
-
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,value=beta,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

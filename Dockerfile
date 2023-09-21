@@ -25,7 +25,7 @@ RUN ./autogen.sh &&\
     make
 
 
-FROM alpine:3.18
+FROM alpine:3.18 as arrange
 # Copy dnsmasq from builder
 COPY --from=builder /dnsmasq/src/dnsmasq /usr/local/bin/dnsmasq
 RUN chmod 755 /usr/local/bin/dnsmasq
@@ -51,4 +51,7 @@ RUN apk update &&\
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+
+FROM alpine:3.18
+COPY --from=arrange / /
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
